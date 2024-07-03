@@ -1,3 +1,4 @@
+import os
 import subprocess
 from pathlib import Path
 
@@ -5,6 +6,8 @@ from latch.functions.messages import message
 from latch.resources.tasks import small_task
 from latch.types.directory import LatchOutputDir
 from latch.types.file import LatchFile
+
+BOWTIE_PATH_PREFIX = "bowtie2"
 
 
 @small_task
@@ -15,11 +18,11 @@ def assembly_task(
     sam_file = Path("covid_assembly.sam").resolve()
 
     bowtie2_cmd = [
-        "bowtie2/bowtie2",
+        os.path.join(BOWTIE_PATH_PREFIX, "bowtie2"),
         "--local",
         "--very-sensitive-local",
         "-x",
-        "wuhan",
+        "reference/wuhan",  # NB: this should likely be passed in as a parameter
         "-1",
         read1.local_path,
         "-2",
