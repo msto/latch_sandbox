@@ -1,0 +1,5 @@
+bowtie2/
+*.bam
+reference/
+
+__pycache__
