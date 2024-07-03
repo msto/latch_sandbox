@@ -21,9 +21,9 @@ def test_sort_bam_task(tmp_path: Path):
             read = builder.add_single(chrom="chr1", start=start)
             bam_writer.write(read)
 
-    sorted_bam_latchfile = sort_bam_task(
+    sorted_bam_latchfile = sort_bam_task.task_function(
         sam=LatchFile(path=unsorted_bam_path),
-        output_directory=LatchOutputDir("latch:///fake_output_directory/"),
+        output_directory=LatchOutputDir("latch://1.account/fake_output_directory/"),
     )
 
     with reader(path=sorted_bam_latchfile.path) as bam_reader:
@@ -31,3 +31,6 @@ def test_sort_bam_task(tmp_path: Path):
 
     assert len(reads) == 3
     assert [read.reference_start for read in reads] == [100, 200, 300]
+
+    assert Path(sorted_bam_latchfile.path).name == "covid_sorted.bam"
+    assert sorted_bam_latchfile.remote_path == "latch://1.account/fake_output_directory/covid_sorted.bam"

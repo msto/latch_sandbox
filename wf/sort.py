@@ -1,3 +1,4 @@
+import os
 import subprocess
 from pathlib import Path
 
@@ -37,6 +38,6 @@ def sort_bam_task(sam: LatchFile, output_directory: LatchOutputDir) -> LatchFile
 
     # intended output path of the file in Latch console, constructed from
     # the user provided output directory
-    output_location = f"{output_directory.remote_directory}/covid_sorted.bam"
+    output_location = os.path.join(output_directory.remote_directory, "covid_sorted.bam")
 
     return LatchFile(str(bam_file), output_location)
